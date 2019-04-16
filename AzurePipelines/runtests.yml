@@ -1,0 +1,20 @@
+#trigger:
+#- master
+
+pool:
+  name: Default
+
+steps:
+- template: checkoutAndPrepare.yml
+- script: |
+    dotnet publish HelloWorldServer/HelloWorldServer.csproj --self-contained true -r osx-x64 -c Release
+  displayName: Creating HelloWorldServer dotnet artifact for embedding
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: 'Tests/Tests.csproj'
+    publishTestResults: true
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: VSTest
+    testResultsFiles: '**/*.trx'

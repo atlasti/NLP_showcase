@@ -1,0 +1,32 @@
+syntax = "proto3";
+package atlasti;
+
+option csharp_namespace = "SSD.ATLASti.Common.HelloWorld.Model";
+option objc_class_prefix = "SSD";
+
+message HelloWorld {
+    string message = 1;
+}
+
+service HelloWorldService {
+    rpc SayHelloAgain (SayHelloAgainActionRequest) returns (stream SayHelloAgainActionReply);
+    rpc SayHello (SayHelloActionRequest) returns (SayHelloActionReply);
+}
+
+message SayHelloAgainActionRequest {
+    string name = 1;
+}
+
+message SayHelloAgainActionReply {
+    float percentage_complete = 1;
+    string status_message = 2;
+    HelloWorld hello_world = 3;
+}
+
+message SayHelloActionRequest {
+    string name = 1;
+}
+
+message SayHelloActionReply {
+    HelloWorld hello_world = 1;
+}

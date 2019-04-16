@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <RuntimeFrameworkVersion>2.2.1</RuntimeFrameworkVersion>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <LangVersion>latest</LangVersion>
+        <RootNamespace>TextServer</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="SSD.ATLASti.Common\HelloWorld\Model" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\NLog.config">
+        <Link>NLog.config</Link>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Google.Protobuf" Version="3.7.0" />
+      <PackageReference Include="Grpc" Version="1.19.0" />
+      <PackageReference Include="NLog" Version="4.5.11" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\HelloWorld.proto">
+        <Link>HelloWorld.proto</Link>
+      </Content>
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,95 @@
+# Please note that this file contains some options that are not available in older clang-format versions.
+# See <https://clang.llvm.org/docs/ClangFormatStyleOptions.html>
+
+---
+# This first (and currently only) section does not have a `Language` option and thus sets the options for all languages.
+AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments: 'false'
+AlignConsecutiveDeclarations: 'false'
+AlignEscapedNewlines: DontAlign
+AlignOperands: 'true'
+AlignTrailingComments: 'false'
+AllowShortBlocksOnASingleLine: 'true'
+AllowShortCaseLabelsOnASingleLine: 'false'
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: 'false'
+AllowShortLoopsOnASingleLine: 'false'
+AlwaysBreakAfterReturnType: None
+AlwaysBreakBeforeMultilineStrings: 'false'
+BinPackArguments: 'false'
+BinPackParameters: 'false'
+BraceWrapping:
+  AfterClass:            'false'
+  AfterControlStatement: 'false'
+  AfterEnum:             'false'
+  AfterFunction:         'false'
+  AfterNamespace:        'false'
+  AfterObjCDeclaration:  'false'
+  AfterStruct:           'false'
+  AfterUnion:            'false'
+  AfterExternBlock:      'false'
+  BeforeCatch:           'true'
+  BeforeElse:            'true'
+  IndentBraces:          'false'
+  SplitEmptyFunction:    'true'
+  SplitEmptyRecord:      'true'
+  SplitEmptyNamespace:   'true'
+BreakBeforeBinaryOperators: None
+BreakBeforeBraces: Custom
+BreakBeforeTernaryOperators: 'true'
+BreakStringLiterals: 'true'
+ColumnLimit: 0
+CommentPragmas: '^ ?(FIXME|TODO)'
+ContinuationIndentWidth: 4
+Cpp11BracedListStyle: 'true'
+DerivePointerAlignment: 'false'
+IncludeBlocks: Regroup
+IncludeCategories:
+# Private categories (should usually be restricted to the main file).
+# Note that we must not add anything to Priority 0, as this may cause the group of the main file import to change when re-formatting!
+  - Regex:           '^"SSD.*([+_]+Private).*"$'
+    Priority:        1
+# Our own imports, excluding categories.
+  - Regex:           '^"SSD[^+_]+"$'
+    Priority:        2
+# Categories on our own classes.
+  - Regex:           '^"SSD.*[+_]+.*"$'
+    Priority:        3
+# Our own categories on Cocoa framework classes.
+  - Regex:           '^"NS.*[+_]+.*"$'
+    Priority:        4
+# Anything else, except framework imports.
+  - Regex:           '^[^<].*'
+    Priority:        5
+# Anything else, including framework imports.
+  - Regex:           '.*'
+    Priority:        6
+# Does not seem to work correctly (e. g. for private categories), but an empty regex is needed to get the main include to the top.
+IncludeIsMainRegex: ''
+IndentCaseLabels: 'true'
+IndentPPDirectives: None
+IndentWidth: 4
+IndentWrappedFunctionNames: 'true'
+KeepEmptyLinesAtTheStartOfBlocks: 'false'
+MaxEmptyLinesToKeep: 1
+# ObjCBinPackProtocolList is irrelevant because we do not have a column limit.
+ObjCBlockIndentWidth: 4
+ObjCSpaceAfterProperty: 'true'
+ObjCSpaceBeforeProtocolList: 'true'
+PointerAlignment: Right
+ReflowComments: 'false'
+SortIncludes: 'true'
+SpaceAfterCStyleCast: 'false'
+SpaceBeforeAssignmentOperators: 'true'
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyParentheses: 'false'
+SpacesBeforeTrailingComments: 2
+SpacesInAngles: 'false'
+SpacesInCStyleCastParentheses: 'false'
+SpacesInContainerLiterals: 'false'
+SpacesInParentheses: 'false'
+SpacesInSquareBrackets: 'false'
+Standard: Cpp11
+TabWidth: 4
+UseTab: Never
+...

@@ -1,0 +1,49 @@
+#trigger:
+#- master
+
+variables:
+  framework_version: '0.9'
+  SDK: 'macosx10.14'
+  configuration: 'Release'
+
+pool:
+  name: Default
+
+steps:
+- template: checkoutAndPrepare.yml
+- script: |
+    dotnet publish HelloWorldServer/HelloWorldServer.csproj --self-contained true -r osx-x64 -c Release
+  displayName: Creating HelloWorldServer dotnet artifact for embedding
+- script: |
+    rm -rf Pods
+    rm -rf Podfile.lock
+    rm -rf HelloWorldManager.xcworkspace
+    pod install --repo-update
+    /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $(framework_version).$(Build.BuildId)" HelloWorldManager/Info.plist
+  workingDirectory: Objective-C
+  displayName: Updating CocoaPods
+- task: Xcode@5
+  inputs:
+    actions: 'clean build'
+    scheme: 'HelloWorldManagerFramework'
+    workingDirectory: 'Objective-C'
+    xcWorkspacePath: 'Objective-C/HelloWorldManager.xcworkspace'
+    xcodeVersion: 'specifyPath'
+    xcodeDeveloperDir: '/Applications/Xcode10.app/Contents/Developer'
+    args: '-derivedDataPath "$(Build.BinariesDirectory)"'
+    signingOption: 'nosign'
+    useXcpretty: true
+- script: |
+    ditto -c -k --sequesterRsrc --keepParent 'Build/Products/Release/HelloWorldManager.framework' '$(Build.ArtifactStagingDirectory)/HelloWorldManager.framework.zip'
+  workingDirectory: $(Build.BinariesDirectory)
+  displayName: Zipping framework
+- task: UniversalPackages@0
+  displayName: Publish framework
+  inputs:
+    command: publish
+    publishDirectory: '$(Build.ArtifactStagingDirectory)'
+    vstsFeedPublish: 'MacOS'
+    vstsFeedPackagePublish: 'macos.helloworldmanager.framework'
+    versionOption: custom
+    versionPublish: '$(framework_version).$(Build.BuildId)'
+    packagePublishDescription: 'Self-contained framework containing dotnet core runtime'

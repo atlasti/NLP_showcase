@@ -1,0 +1,36 @@
+#trigger:
+#- master
+
+variables:
+  framework_version: '0.9'
+  SDK: 'macosx10.14'
+  configuration: 'Release'
+
+pool:
+  name: Default
+
+steps:
+- checkout: self
+  clean: false
+  fetchDepth: 1
+  lfs: true
+  submodules: recursive
+- script: |
+    /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $(framework_version).$(Build.BuildId)" HelloWorldApp/Info.plist
+  workingDirectory: Objective-C
+  displayName: Set version number
+- task: Xcode@5
+  inputs:
+    actions: 'archive'
+    scheme: 'HelloWorldApp'
+    workingDirectory: 'Objective-C'
+    xcWorkspacePath: 'Objective-C/HelloWorldApp.xcodeproj'
+    xcodeVersion: 'specifyPath'
+    xcodeDeveloperDir: '/Applications/Xcode10.app/Contents/Developer'
+    args: '-derivedDataPath "$(Build.BinariesDirectory)"'
+    archivePath: '$(Build.BinariesDirectory)/Archive/HelloWorldApp.xcarchive'
+    exportPath: '$(Build.BinariesDirectory)/Export'
+    signingOption: 'nosign'
+    useXcpretty: false
+- script:
+    ls -lR '$(Build.BinariesDirectory)'

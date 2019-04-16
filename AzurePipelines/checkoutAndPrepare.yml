@@ -1,0 +1,14 @@
+steps:
+- checkout: self
+  clean: false
+  fetchDepth: 1
+  lfs: true
+  submodules: recursive
+- task: DeleteFiles@1
+  inputs:
+    contents: '**/*(bin|obj)/**'
+  displayName: 'Deleting old artifacts'
+- script: |
+    export MAC_CI_PAT="$(ContinuousIntegration.PAT)"
+    rake prepare_dotnet
+  displayName: Restoring nuget packes

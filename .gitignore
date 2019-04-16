@@ -1,0 +1,17 @@
+bin
+obj
+packages
+.vs
+Podfile.lock
+Pods
+msbuild.log
+/Tests/test-results
+UserInterfaceState.xcuserstate
+/.idea/.idea.HelloWorld/.idea/workspace.xml
+/.idea/.idea.HelloWorld/.idea/contentModel.xml
+*.xcworkspace
+/HelloWorldApp/Artifacts
+xcschememanagement.plist
+xcdebugger
+nuget.config
+/.idea
