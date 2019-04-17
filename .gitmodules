@@ -1,0 +1,3 @@
+[submodule "Objective-C/HelloWorldManager/CommunicationManager"]
+	path = Objective-C/HelloWorldManager/CommunicationManager
+	url = git@github.com:atlasti/CommunicationManager.git

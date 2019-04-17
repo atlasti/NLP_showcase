@@ -15,3 +15,4 @@ xcschememanagement.plist
 xcdebugger
 nuget.config
 /.idea
+/Objective-C/HelloWorldManager/HelloWorld.pb*.*
