@@ -53,8 +53,11 @@ namespace SSD.ATLASti.Common.HelloWorld.Server
 
         private static string CallPythonScript(string scriptName, string parameters)
         {
-            const string fileName  = "python";
-            var          arguments = $"{scriptName} {parameters}";
+            var fileName  = GetPythonPath();
+
+            var arguments = $"{scriptName} {parameters}";
+            Log.Info($"{fileName} {arguments}");
+
             var process = new Process
                           {
                               StartInfo =
@@ -82,8 +85,10 @@ namespace SSD.ATLASti.Common.HelloWorld.Server
                 StatusMessage      = "Thinking..."
             });
 
-            var message = CallPythonScript(GetScriptPath("HelloWorld.py"), request.Name);
-            
+            Log.Info($"Calling python script.");
+            var message = CallPythonScript(GetScriptPath("NLP_interface.py"), request.Name);
+            Log.Info($"Exited python script.");
+
             var reply = new SayHelloAgainActionReply
             {
                 PercentageComplete = 100.0f, StatusMessage = $"Remembered {request.Name}",
@@ -93,6 +98,7 @@ namespace SSD.ATLASti.Common.HelloWorld.Server
 
             Log.Info("Replying with hello again message.");
         }
+        private static string GetPythonPath([CallerFilePath] string sourceFilePath = "") => Path.Combine(Path.GetDirectoryName(sourceFilePath), "../../../../proto_test/bin/python");
 
         private static string GetScriptPath(string fileName, [CallerFilePath] string sourceFilePath = "") => Path.Combine(Path.GetDirectoryName(sourceFilePath), fileName);
         
